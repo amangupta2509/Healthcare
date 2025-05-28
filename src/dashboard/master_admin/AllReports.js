@@ -1,0 +1,84 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useTheme } from "../../ThemeProvider";
+import "./master_admin.css";
+
+const AllReports = () => {
+  const { theme } = useTheme();
+  const [patients, setPatients] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const res = await axios.get("http://localhost:3001/patients");
+        const withReports = res.data.filter((p) => p.reportPdfUrl);
+        setPatients(withReports);
+      } catch (err) {
+        console.error("Error fetching reports:", err);
+      }
+    };
+
+    fetchReports();
+  }, []);
+
+  const filtered = patients.filter(
+    (p) =>
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      p.mrn.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className={`dashboard-main ${theme}`}>
+      <h1>All Reports</h1>
+
+      <div className="report-search">
+        <input
+          type="text"
+          placeholder="Search by name or MRN"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      <table className="user-table">
+        <thead>
+          <tr>
+            <th>MRN</th>
+            <th>Name</th>
+            <th>Condition</th>
+            <th>View Report</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filtered.map((p) => (
+            <tr key={p.mrn}>
+              <td>{p.mrn}</td>
+              <td>{p.name}</td>
+              <td>{p.condition}</td>
+              <td>
+                <a
+                  href={p.reportPdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-secondary"
+                >
+                  View PDF
+                </a>
+              </td>
+            </tr>
+          ))}
+          {filtered.length === 0 && (
+            <tr>
+              <td colSpan="4" style={{ textAlign: "center", padding: "1rem" }}>
+                No reports found.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default AllReports;
