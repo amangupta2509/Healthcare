@@ -3,26 +3,19 @@ import { NavLink, useNavigate } from "react-router-dom";
 import ProfileImage from "../../../image/1.png";
 import "../../physio/components/Sidebar.css";
 import {
-  Home,
-  Users,
-  Dumbbell,
-  BarChart2,
   LogOut,
   Menu,
-  Workflow,
   ChevronLeft,
   ChevronRight,
   X,
   Check,
-  Hospital,
-  LayoutDashboard,
-  BookText,
-  Lock,
   Calendar,
-  Newspaper,
+  ClipboardCheck,
+  KeyRound,
+  User2,
 } from "lucide-react";
 
-const MasterAdminSidebar = () => {
+const CounselorSidebar = () => {
   const [isOpen, setIsOpen] = useState(window.innerWidth > 768);
   const [collapsed, setCollapsed] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -36,13 +29,6 @@ const MasterAdminSidebar = () => {
   const handleResize = () => setIsOpen(window.innerWidth > 768);
   const closeSidebar = () => {
     if (isOpen && window.innerWidth <= 768) setIsOpen(false);
-  };
-
-  const handleMouseEnter = () => {
-    if (collapsed && window.innerWidth > 768) setIsHovering(true);
-  };
-  const handleMouseLeave = () => {
-    if (collapsed && window.innerWidth > 768) setIsHovering(false);
   };
 
   useEffect(() => {
@@ -72,7 +58,7 @@ const MasterAdminSidebar = () => {
     setTimeout(() => {
       setShowToast(false);
       navigate("/login");
-    }, 3000);
+    }, 2000);
   };
 
   const cancelLogout = () => setShowLogoutConfirm(false);
@@ -87,6 +73,7 @@ const MasterAdminSidebar = () => {
         <div className="sidebar-overlay show" onClick={closeSidebar}></div>
       )}
 
+      {/* Logout Confirmation Modal */}
       {showLogoutConfirm && (
         <div className="modal-overlay">
           <div className="modal-container">
@@ -108,6 +95,7 @@ const MasterAdminSidebar = () => {
         </div>
       )}
 
+      {/* Toast Message */}
       {showToast && (
         <div className="toast-overlay">
           <div className="toast-container success">
@@ -119,80 +107,41 @@ const MasterAdminSidebar = () => {
         </div>
       )}
 
+      {/* Sidebar */}
       <aside
         className={`sidebar ${isOpen ? "open" : ""} ${
           collapsed ? "collapsed" : ""
         } ${isHovering ? "hovering" : ""}`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={() => collapsed && setIsHovering(true)}
+        onMouseLeave={() => collapsed && setIsHovering(false)}
       >
         <div className="sidebar-header">
           <div className="sidebar-profile">
             <img src={ProfileImage} alt="Profile" className="sidebar-avatar" />
-           <a href="/masteradmin"> <span className="sidebar-username">Admin</span></a>
+            <a href="/counselor">
+              <span className="sidebar-username">Counselor</span>
+            </a>
           </div>
         </div>
 
         <nav className="sidebar-menu-wrapper">
           <ul className="sidebar-menu">
             <li>
-              <NavLink to="/masteradmin/UserManagement" className={navLinkClass}>
-                <Users size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
-                <span>User Management</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/masteradmin/SystemOverview" className={navLinkClass}>
-                <LayoutDashboard size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
-                <span>System Overview</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/masteradmin/Services" className={navLinkClass}>
-                <Hospital size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
-                <span>Services</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/masteradmin/PatientJourney" className={navLinkClass}>
-                <Workflow size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
-                <span>Patient Journey</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/masteradmin/appointments" className={navLinkClass}>
+              <NavLink to="/counselor/CounselorsAppointments" className={navLinkClass}>
                 <Calendar size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
                 <span>Appointments</span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/masteradmin/AdminBlogSection" className={navLinkClass}>
-                <Newspaper size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
-                <span>Blog Section</span>
+              <NavLink to="/counselor/CounselorCompletedAppointments" className={navLinkClass}>
+                <ClipboardCheck size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
+                <span>Completed</span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/masteradmin/AllReports" className={navLinkClass}>
-                <BarChart2 size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
-                <span>All Reports</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/masteradmin/ActivityLogs" className={navLinkClass}>
-                <BookText size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
-                <span>Activity Logs</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/masteradmin/SecurityControls" className={navLinkClass}>
-                <Lock size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
-                <span>Security Controls</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/masteradmin/AdminPasswordRequests" className={navLinkClass}>
-                <Lock size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
-                <span>Password Requests</span>
+              <NavLink to="/counselor/CounselorPasswordRequest" className={navLinkClass}>
+                <KeyRound size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
+                <span>Password Request</span>
               </NavLink>
             </li>
             <li>
@@ -219,4 +168,4 @@ const MasterAdminSidebar = () => {
   );
 };
 
-export default MasterAdminSidebar;
+export default CounselorSidebar;

@@ -130,7 +130,7 @@ const SecurityControls = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button className="btn btn-secondary" onClick={exportSecurityLog}>
+        <button className="btn btn-primary" onClick={exportSecurityLog}>
           Export Logs
         </button>
       </div>
@@ -164,10 +164,10 @@ const SecurityControls = () => {
                   </select>
                 </td>
                 <td>
-                  <button className="btn btn-secondary" onClick={() => confirmAction(u, "reset")}>
+                  <button className="btn btn-primary" onClick={() => confirmAction(u, "reset")}>
                     Reset Password
                   </button>
-                  <button className="btn btn-remove" onClick={() => confirmAction(u, "logout")}>
+                  <button className="btn btn-primary" onClick={() => confirmAction(u, "logout")}>
                     Force Logout
                   </button>
                 </td>
@@ -226,10 +226,10 @@ const SecurityControls = () => {
             )}
 
             <div className="modal-actions">
-              <button className="cancel-btn" onClick={() => setConfirmModal({ visible: false })}>
+              <button className="btn btn-primary" onClick={() => setConfirmModal({ visible: false })}>
                 Cancel
               </button>
-              <button className="save-btn" onClick={executeConfirmedAction}>
+              <button className="btn btn-primary" onClick={executeConfirmedAction}>
                 Confirm
               </button>
             </div>

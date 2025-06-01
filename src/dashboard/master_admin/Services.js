@@ -9,7 +9,9 @@ const Services = () => {
   const [services, setServices] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
+  const [editingServiceId, setEditingServiceId] = useState(null);
   const formRef = useRef(null);
+
   const [formData, setFormData] = useState({
     banner: "",
     title: "",
@@ -60,16 +62,28 @@ const Services = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(API_URL, {
-      method: "POST",
+    const method = editingServiceId ? "PUT" : "POST";
+    const url = editingServiceId
+      ? `${API_URL}/${editingServiceId}`
+      : API_URL;
+
+    fetch(url, {
+      method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     })
       .then((res) => res.json())
-      .then((newService) => {
-        setServices([...services, newService]);
+      .then((data) => {
+        if (editingServiceId) {
+          setServices((prev) =>
+            prev.map((s) => (s.id === editingServiceId ? data : s))
+          );
+          toast.success("Service updated successfully!");
+        } else {
+          setServices([...services, data]);
+          toast.success("Service added successfully!");
+        }
         resetForm();
-        toast.success("Service added successfully!");
         setShowForm(false);
       });
   };
@@ -87,15 +101,16 @@ const Services = () => {
       previewVideo: "",
       features: [""],
     });
+    setEditingServiceId(null);
   };
 
   const handleDelete = (id) => {
     toast.info(
       <div>
-        <p>Are you sure you want to delete this service?</p>
+        <p style={{ color: "black" }}>Are you sure you want to delete this service?</p>
         <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
           <button
-            className="btn btn-secondary"
+            className="btn btn-primary"
             onClick={() => {
               fetch(`${API_URL}/${id}`, { method: "DELETE" }).then(() => {
                 setServices((prev) => prev.filter((s) => s.id !== id));
@@ -107,7 +122,7 @@ const Services = () => {
             Confirm
           </button>
           <button
-            className="btn btn-secondary"
+            className="btn btn-primary"
             onClick={() => {
               toast.dismiss();
               toast.info("Deletion cancelled.");
@@ -129,9 +144,8 @@ const Services = () => {
 
   const handleEdit = (service) => {
     setFormData(service);
+    setEditingServiceId(service.id);
     setShowForm(true);
-    handleDelete(service.id);
-    toast.info("Editing service - previous entry will be removed.");
     setTimeout(() => {
       formRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
@@ -142,7 +156,10 @@ const Services = () => {
       <ToastContainer position="top-center" autoClose={3000} />
       <h1>Manage Services</h1>
 
-      <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
+      <button className="btn btn-primary" onClick={() => {
+        setShowForm(!showForm);
+        if (!showForm) resetForm(); // clear form when opening
+      }}>
         {showForm ? "Close Form" : "Add Service"}
       </button>
 
@@ -186,14 +203,16 @@ const Services = () => {
               <div key={i} className="d-flex">
                 <input value={f} onChange={(e) => handleFeatureChange(i, e.target.value)} placeholder={`Feature ${i + 1}`} required />
                 {formData.features.length > 1 && (
-                  <button type="button" className="btn btn-secondary" onClick={() => removeFeature(i)}>Remove</button>
+                  <button type="button" className="btn btn-primary" onClick={() => removeFeature(i)}>Remove</button>
                 )}
               </div>
             ))}
-            <button type="button" className="btn btn-secondary" onClick={addFeature}>Add Feature</button>
+            <button type="button" className="btn btn-primary" onClick={addFeature}>Add Feature</button>
 
             <div className="center-btn">
-              <button type="submit" className="btn">Submit Service</button>
+              <button type="submit" className="btn btn-primary">
+                {editingServiceId ? "Update Service" : "Submit Service"}
+              </button>
             </div>
           </form>
         )}
@@ -211,7 +230,9 @@ const Services = () => {
               <p><strong>{s.description}</strong></p>
               <p><em>{s.subtitle}</em></p>
               <div className="center-btn">
-                <center><button className="btn btn-primary" onClick={() => setSelectedService(s)}>View Details</button></center>
+                <button className="btn btn-primary" onClick={() => setSelectedService(s)}>View</button>
+                <button className="btn btn-primary" onClick={() => handleEdit(s)}>Edit</button>
+                <button className="btn btn-primary" onClick={() => handleDelete(s.id)}>Delete</button>
               </div>
             </div>
           ))}
@@ -219,24 +240,41 @@ const Services = () => {
       )}
 
       {selectedService && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="modal-overlay" onClick={() => setSelectedService(null)}>
+          <div className="modals-box" onClick={(e) => e.stopPropagation()}>
             <h2>{selectedService.title}</h2>
-            <p><strong>{selectedService.subtitle}</strong></p>
-            <img src={selectedService.banner} alt="service-banner" style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }} />
-            <p><strong>Monthly:</strong> ₹{selectedService.priceMonthly}</p>
-            <p><strong>Quarterly:</strong> ₹{selectedService.priceQuarterly}</p>
-            <p><strong>Yearly:</strong> ₹{selectedService.priceYearly}</p>
-            <p><strong>Rating:</strong> {selectedService.rating}</p>
-            <p><strong>Description:</strong> {selectedService.description}</p>
-            <iframe width="100%" height="200" src={selectedService.previewVideo.replace("watch?v=", "embed/")} title="Preview Video" frameBorder="0" allowFullScreen />
-            <ul>
+            <img src={selectedService.banner} alt="service-banner" style={{ width: "100%", maxHeight: "200px", objectFit: "cover", borderRadius: "10px", marginBottom: "20px" }} />
+
+            <table className="popup-table">
+              <tbody>
+                <tr><td><strong>Sub-Title:</strong></td><td>{selectedService.subtitle}</td></tr>
+                <tr><td><strong>Monthly:</strong></td><td>₹{selectedService.priceMonthly}</td></tr>
+                <tr><td><strong>Quarterly:</strong></td><td>₹{selectedService.priceQuarterly}</td></tr>
+                <tr><td><strong>Yearly:</strong></td><td>₹{selectedService.priceYearly}</td></tr>
+                <tr><td><strong>Rating:</strong></td><td>{selectedService.rating}</td></tr>
+                <tr><td><strong>Description:</strong></td><td>{selectedService.description}</td></tr>
+              </tbody>
+            </table>
+
+            <iframe
+              width="100%"
+              height="200"
+              src={selectedService.previewVideo.replace("watch?v=", "embed/")}
+              title="Preview Video"
+              frameBorder="0"
+              allowFullScreen
+              style={{ margin: "20px 0" }}
+            />
+
+            <strong>Program Features:</strong>
+            <ul style={{paddingLeft: "10px"}}>
               {selectedService.features.map((f, i) => (
                 <li key={i}>{f}</li>
               ))}
             </ul>
+
             <div className="center-btn" style={{ marginTop: "20px" }}>
-              <center><button className="btn btn-secondary" onClick={() => setSelectedService(null)}>Close</button></center>
+              <center><button className="btn btn-primary" onClick={() => setSelectedService(null)}>Close</button></center>
             </div>
           </div>
         </div>

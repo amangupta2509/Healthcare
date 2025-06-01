@@ -242,7 +242,17 @@ const Sidebar = () => {
                 <span>Physio</span>
               </NavLink>
             </li>
-
+            <li>
+              <NavLink to="/PhysioPasswordRequest" className={navLinkClass}>
+                <Workflow
+                  size={18}
+                  style={{
+                    marginRight: !collapsed || isHovering ? "10px" : "0",
+                  }}
+                />
+                <span>Password Request</span>
+              </NavLink>
+            </li>
             {/* Updated logout item */}
             <li>
               {/* Use a regular clickable element here instead of NavLink */}

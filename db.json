@@ -457,7 +457,7 @@
       "id": "6080",
       "name": "Emma Williams",
       "email": "adityagupta.d7@gmail.com",
-      "password": "Aditya@1234",
+      "password": "password123",
       "role": "lab"
     }
   ],
@@ -489,6 +489,13 @@
       "email": "admin@example.com",
       "password": "password123",
       "role": "masteradmin"
+    },
+    {
+      "id": "1",
+      "name": "John Counselor",
+      "email": "counselor@example.com",
+      "password": "password123",
+      "role": "counselor"
     }
   ],
   "patients": [
@@ -827,7 +834,7 @@
   "services": [
     {
       "id": "1",
-      "banner": "https://via.placeholder.com/300x150.png",
+      "banner": "blob:http://localhost:3000/4a145864-293c-4e86-9f78-8c29326a4b9f",
       "title": "Slim Care",
       "subtitle": "Weight Loss Plan",
       "priceMonthly": "3900",
@@ -841,6 +848,7 @@
         "Nutrition guidance",
         "Progress tracking",
         "Community support",
+        "Expert coaching",
         "Expert coaching"
       ]
     },
@@ -917,7 +925,18 @@
       "type": "Online",
       "date": "2025-05-28",
       "time": "10:30 AM",
-      "notes": "Discuss anxiety support.",
+      "notes": "Discuss anxiety support.\n",
+      "status": "Completed",
+      "meetingLink": ""
+    },
+    {
+      "id": "2",
+      "mrn": "MRN-2025002",
+      "patientName": "Jane Smith",
+      "type": "In-Person",
+      "date": "2025-06-01",
+      "time": "2:00 PM",
+      "notes": "Follow-up session.",
       "status": "Pending",
       "meetingLink": ""
     },
@@ -929,7 +948,29 @@
       "date": "2025-05-29",
       "time": "02:00 PM",
       "notes": "Follow-up session after last evaluation.",
-      "status": "Completed",
+      "status": "Pending",
+      "meetingLink": ""
+    },
+    {
+      "id": "1748586168410",
+      "mrn": "MRN-2025001",
+      "patientName": "John Doe",
+      "type": "Online",
+      "date": "2025-05-31",
+      "time": "14:55",
+      "notes": "Discuss anxiety support.",
+      "status": "Pending",
+      "meetingLink": ""
+    },
+    {
+      "id": "1748587327532",
+      "mrn": "MRN-2025001",
+      "patientName": "John Doe",
+      "type": "Online",
+      "date": "2025-05-06",
+      "time": "15:13",
+      "notes": "Discuss anxiety support.",
+      "status": "Pending",
       "meetingLink": ""
     }
   ],
@@ -953,7 +994,7 @@
       "date": "2025-06-02",
       "time": "11:30 AM",
       "notes": "Follow-up for chronic condition.",
-      "status": "Approved",
+      "status": "Pending",
       "meetingLink": ""
     }
   ],
@@ -1014,7 +1055,7 @@
       "date": "2025-06-07",
       "time": "08:00 AM",
       "notes": "Blood collection for routine labs.",
-      "status": "Pending",
+      "status": "Approved",
       "meetingLink": ""
     },
     {
@@ -1028,5 +1069,182 @@
       "status": "Approved",
       "meetingLink": ""
     }
-  ]
+  ],
+  "passwordChangeRequests": [
+    {
+      "id": "9809",
+      "counselorName": "aman",
+      "email": "admin@example.com",
+      "reason": "sssasasasasas",
+      "status": "Approved",
+      "requestedAt": "2025-05-30T09:12:20.113Z"
+    }
+  ],
+  "dashboardMetrics": {
+    "roleCounts": [
+      {
+        "role": "Doctor",
+        "count": 12
+      },
+      {
+        "role": "Dietitian",
+        "count": 5
+      },
+      {
+        "role": "Physio",
+        "count": 4
+      },
+      {
+        "role": "Phlebotomist",
+        "count": 3
+      },
+      {
+        "role": "Lab",
+        "count": 2
+      }
+    ],
+    "appointmentsStatus": [
+      {
+        "role": "Doctor",
+        "completed": 36,
+        "pending": 12
+      },
+      {
+        "role": "Dietitian",
+        "completed": 20,
+        "pending": 4
+      },
+      {
+        "role": "Physio",
+        "completed": 18,
+        "pending": 2
+      },
+      {
+        "role": "Phlebotomist",
+        "completed": 10,
+        "pending": 5
+      }
+    ],
+    "dailyAppointments": [
+      {
+        "date": "2025-05-25",
+        "Doctor": 5,
+        "Dietitian": 2,
+        "Physio": 1
+      },
+      {
+        "date": "2025-05-26",
+        "Doctor": 6,
+        "Dietitian": 3,
+        "Physio": 2
+      },
+      {
+        "date": "2025-05-27",
+        "Doctor": 4,
+        "Dietitian": 2,
+        "Physio": 3
+      }
+    ],
+    "topDoctors": [
+      {
+        "name": "Dr. Asha",
+        "count": 25
+      },
+      {
+        "name": "Dr. Raj",
+        "count": 20
+      },
+      {
+        "name": "Dr. Mehta",
+        "count": 18
+      },
+      {
+        "name": "Dr. Verma",
+        "count": 16
+      },
+      {
+        "name": "Dr. Khan",
+        "count": 14
+      }
+    ],
+    "reportContributions": [
+      {
+        "role": "Doctor",
+        "value": 20
+      },
+      {
+        "role": "Lab",
+        "value": 35
+      },
+      {
+        "role": "Dietitian",
+        "value": 10
+      }
+    ],
+    "roleAssignment": [
+      {
+        "role": "Doctor",
+        "patients": 120
+      },
+      {
+        "role": "Dietitian",
+        "patients": 60
+      },
+      {
+        "role": "Physio",
+        "patients": 30
+      }
+    ],
+    "noShowRates": [
+      {
+        "role": "Doctor",
+        "rate": 12.5
+      },
+      {
+        "role": "Dietitian",
+        "rate": 10.2
+      },
+      {
+        "role": "Physio",
+        "rate": 8
+      }
+    ],
+    "recentLogs": [
+      {
+        "id": 1,
+        "actor": "admin",
+        "action": "Created report",
+        "mrn": "MRN001",
+        "timestamp": "2025-05-29T10:30:00Z"
+      },
+      {
+        "id": 2,
+        "actor": "doctor",
+        "action": "Approved appointment",
+        "mrn": "MRN002",
+        "timestamp": "2025-05-29T11:00:00Z"
+      },
+      {
+        "id": 3,
+        "actor": "dietitian",
+        "action": "Updated plan",
+        "mrn": "MRN003",
+        "timestamp": "2025-05-29T11:30:00Z"
+      },
+      {
+        "id": 4,
+        "actor": "physio",
+        "action": "Marked completed",
+        "mrn": "MRN004",
+        "timestamp": "2025-05-29T12:00:00Z"
+      },
+      {
+        "id": 5,
+        "actor": "phlebotomist",
+        "action": "Collected sample",
+        "mrn": "MRN005",
+        "timestamp": "2025-05-29T12:30:00Z"
+      }
+    ]
+  }
 }

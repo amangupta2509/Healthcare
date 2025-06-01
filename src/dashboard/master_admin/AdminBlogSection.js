@@ -180,7 +180,12 @@ const AdminBlogSection = () => {
               required
             />
             <label>Banner Image</label>
-            <input type="file" accept="image/*" onChange={handleBannerUpload} required={!formData.banner} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleBannerUpload}
+              required={!formData.banner}
+            />
             {formData.banner && (
               <img
                 src={formData.banner}
@@ -189,7 +194,7 @@ const AdminBlogSection = () => {
               />
             )}
             <div className="center-btn">
-              <button type="submit" className="btn">
+              <button type="submit" className="btn btn-primary">
                 {editId ? "Update Blog" : "Publish Blog"}
               </button>
             </div>
@@ -204,12 +209,31 @@ const AdminBlogSection = () => {
         <div className="blog-grid">
           {blogs.map((b) => (
             <div key={b.id} className="card blog-card">
-              <img src={b.banner} alt="banner" style={{ height: "100px", objectFit: "cover", width: "100%" }} />
+              <img
+                src={b.banner}
+                alt="banner"
+                style={{ height: "100px", objectFit: "cover", width: "100%" }}
+              />
               <h3>{b.title}</h3>
-              <p><strong>{b.dateTime}</strong></p>
-              <p><em>{b.shortDesc}</em></p>
-              <div className="center-btn">
-                <center><button className="btn btn-primary" onClick={() => setSelectedBlog(b)}>View Details</button></center>
+              <p>
+                <strong>{b.dateTime}</strong>
+              </p>
+              <p>
+                <em>{b.shortDesc}</em>
+              </p>
+              <div
+                className="center-btn"
+                style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}
+              >
+                <button className="btn btn-primary" onClick={() => setSelectedBlog(b)}>
+                  View
+                </button>
+                <button className="btn btn-primary" onClick={() => handleEdit(b)}>
+                  Edit
+                </button>
+                <button className="btn btn-primary" onClick={() => handleDelete(b.id)}>
+                  Delete
+                </button>
               </div>
             </div>
           ))}
@@ -219,15 +243,25 @@ const AdminBlogSection = () => {
       {/* Popup Modal */}
       {selectedBlog && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className="modals-box">
             <h2>{selectedBlog.title}</h2>
-            
-            <img src={selectedBlog.banner} alt="blog" style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }} />
-            <p><strong>{selectedBlog.dateTime}</strong></p>
-            <p><em>{selectedBlog.shortDesc}</em></p>
+
+            <img
+              src={selectedBlog.banner}
+              alt="blog"
+              style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }}
+            />
+            <p>
+              <strong>{selectedBlog.dateTime}</strong>
+            </p>
+            <p>
+              <em>{selectedBlog.shortDesc}</em>
+            </p>
             <p>{selectedBlog.longDesc}</p>
             <div className="center-btn" style={{ marginTop: "20px" }}>
-              <center><button className="btn btn-secondary" onClick={() => setSelectedBlog(null)}>Close</button></center>
+              <button className="btn btn-primary" onClick={() => setSelectedBlog(null)}>
+                Close
+              </button>
             </div>
           </div>
         </div>

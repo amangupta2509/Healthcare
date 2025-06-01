@@ -133,7 +133,7 @@ const PhlebotomistAppointments = () => {
                   <td>{a.time}</td>
                   <td>
                     <button
-                      className="btn btn-secondary"
+                      className="btn btn-primary"
                       onClick={() => setSelectedNote(a.notes)}
                     >
                       View
@@ -156,15 +156,16 @@ const PhlebotomistAppointments = () => {
                             border: "1px solid #ccc",
                             borderRadius: "6px",
                           }}
+                          className="search-input"
                         />
                         <button
-                          className="btn btn-secondary"
+                          className="btn btn-primary"
                           onClick={() => handleGenerateLink(a.id)}
                         >
                           Auto
                         </button>
                         <button
-                          className="btn btn-secondary"
+                          className="btn btn-primary"
                           style={{ backgroundColor: "#f44336", color: "#fff" }}
                           onClick={() => handleMeetingLinkChange(a.id, "")}
                         >
@@ -192,7 +193,7 @@ const PhlebotomistAppointments = () => {
                   </td>
                   <td>
                     <button
-                      className="btn btn-secondary"
+                      className="btn btn-primary"
                       onClick={() => handleDelete(a.id)}
                     >
                       Delete
@@ -207,12 +208,14 @@ const PhlebotomistAppointments = () => {
 
       {selectedNote && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className="modalsc-box"
+          style={{border:"1px solid #cc5500"}}
+          >
             <h2>Full Notes</h2>
             <p>{selectedNote}</p>
             <div className="center-btn">
               <button
-                className="btn btn-secondary"
+                className="btn btn-primary"
                 onClick={() => setSelectedNote(null)}
               >
                 Close

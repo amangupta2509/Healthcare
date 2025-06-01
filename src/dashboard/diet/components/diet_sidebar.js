@@ -185,9 +185,9 @@ const DietSidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/diet/diet_physio" className={navLinkClass}>
+              <NavLink to="/diet/DietPasswordRequest" className={navLinkClass}>
                 <Workflow size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
-                <span>Dietitian</span>
+                <span>Password Request</span>
               </NavLink>
             </li>
             <li>

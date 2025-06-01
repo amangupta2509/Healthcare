@@ -32,7 +32,7 @@ import Report from "./dashboard/physio/report";
 import UserDetails from "./dashboard/physio/userDetails";
 import Physioo from "./dashboard/physio/physioo";
 import PhysiosAppointments from "./dashboard/physio/PhysiosAppointments";
-
+import PhysioPasswordRequest from "./dashboard/physio/pages/PhysioPasswordRequest";
 // Diet Dashboard
 import DietNavbar from "./dashboard/diet/components/diet_navbar";
 import DietSidebar from "./dashboard/diet/components/diet_sidebar";
@@ -44,6 +44,7 @@ import DietReport from "./dashboard/diet/diet_report";
 import DietUserDetails from "./dashboard/diet/diet_userdetails";
 import DietPhysioo from "./dashboard/diet/diet_physioo";
 import DietitiansAppointments from "./dashboard/diet/DietitiansAppointments"; 
+import DietPasswordRequest from "./dashboard/diet/pages/DietPasswordRequest";
 // Doctor Dashboard
 import DoctorNavbar from "./dashboard/doctor/components/doctor_navbar";
 import DoctorSidebar from "./dashboard/doctor/components/doctor_sidebar";
@@ -57,7 +58,7 @@ import DoctorPhysioo from "./dashboard/doctor/doctor_physioo";
 import DoctorUpcomingAppointments from "./dashboard/doctor/DoctorUpcomingAppointments ";
 import DoctorAssignmentDashboard from "./dashboard/doctor/DoctorAssignmentDashboard";
 import DoctorsAppointments from "./dashboard/doctor/DoctorsAppointments";
-
+import DoctorPasswordRequest from "./dashboard/doctor/pages/DoctorPasswordRequest";
 // 🆕 Master Admin Dashboard
 import MasterAdminNavbar from "./dashboard/master_admin/components/master_admin_navbar";
 import MasterAdminSidebar from "./dashboard/master_admin/components/master_admin_sidebar";
@@ -78,6 +79,16 @@ import DoctorAppointments from "./dashboard/master_admin/DoctorAppointments";
 import DietitianAppointments from "./dashboard/master_admin/DietitianAppointments";
 import PhysioAppointments from "./dashboard/master_admin/PhysioAppointments";
 import PhlebotomistAppointments from "./dashboard/master_admin/PhlebotomistAppointments";
+import AdminPasswordRequests from "./dashboard/master_admin/AdminPasswordRequests";
+
+// Counselor Dashboard
+import CounselorNavbar from "./dashboard/counselor/components/counselor_navbar";
+import CounselorSidebar from "./dashboard/counselor/components/counselor_sidebar";
+import CounselorFooter from "./dashboard/counselor/components/counselor_footer";
+import CounselorDashboard from "./dashboard/counselor/CounselorDashboard";
+import CounselorsAppointments from "./dashboard/counselor/CounselorsAppointments";
+import CounselorCompletedAppointments from "./dashboard/counselor/CounselorCompletedAppointments";
+import CounselorPasswordRequest from "./dashboard/counselor/pages/CounselorPasswordRequest";
 // Layouts
 const AuthLayout = () => {
   const { theme } = useTheme();
@@ -162,6 +173,24 @@ const MasterAdminDashboardLayout = () => {
   );
 };
 
+const CounselorDashboardLayout = () => {
+  const { theme } = useTheme();
+  return (
+    <ProtectedRoute allowedRoles={["counselor"]}>
+      <div className={`app ${theme}`}>
+        <CounselorNavbar />
+        <div className="dashboard-layout">
+          <CounselorSidebar />
+          <div className="dashboard-main">
+            <Outlet />
+            <CounselorFooter />
+          </div>
+        </div>
+      </div>
+    </ProtectedRoute>
+  );
+};
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -189,6 +218,7 @@ const App = () => {
             <Route path="/user-details/:userId" element={<UserDetails />} />
             <Route path="/user/:id/report" element={<Report />} />
             <Route path="PhysiosAppointments" element={<PhysiosAppointments />} />
+            <Route path="PhysioPasswordRequest" element={<PhysioPasswordRequest />} />
           </Route>
 
           {/* Diet */}
@@ -202,6 +232,7 @@ const App = () => {
             <Route path="user-details/:userId" element={<DietUserDetails />} />
             <Route path="user/:id/report" element={<DietReport />} />
             <Route path="DietitiansAppointments" element={<DietitiansAppointments />} />
+            <Route path="DietPasswordRequest" element={<DietPasswordRequest />} />
           </Route>
 
           {/* Doctor */}
@@ -230,6 +261,7 @@ const App = () => {
               path="DoctorAssignmentDashboard"
               element={<DoctorAssignmentDashboard />}
             />
+            <Route path="DoctorPasswordRequest" element={<DoctorPasswordRequest />} />
           </Route>
 
           {/* 🆕 Master Admin */}
@@ -256,8 +288,17 @@ const App = () => {
             <Route path="appointments/dietitian" element={<DietitianAppointments />} />
             <Route path="appointments/physio" element={<PhysioAppointments />} />
           <Route path="appointments/phlebotomist" element={<PhlebotomistAppointments />} />
+            <Route path="AdminPasswordRequests" element={<AdminPasswordRequests />} />
           </Route>
          
+         <Route path="/counselor" element={<CounselorDashboardLayout />}>
+            <Route index element={<CounselorDashboard />} />
+            <Route path="CounselorsAppointments" element={<CounselorsAppointments />} />
+            <Route path="CounselorCompletedAppointments" element={<CounselorCompletedAppointments />} />
+            <Route path="CounselorPasswordRequest" element={<CounselorPasswordRequest />} />
+          </Route>
+
+
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

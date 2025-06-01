@@ -1,40 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useTheme } from "../../ThemeProvider";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./master_admin.css";
 
 const roles = ["All", "doctor", "physio", "dietitian", "lab", "phlebotomist"];
-
-const Toast = ({ message, type, onClose, onConfirm, onCancel }) => {
-  if (!message) return null;
-
-  return (
-    <div className={`toast-message ${type}`} style={{ zIndex: 9999 }}>
-      <i
-        className={`fa ${
-          type === "error"
-            ? "fa-times-circle"
-            : type === "success"
-            ? "fa-check-circle"
-            : "fa-question-circle"
-        }`}
-        style={{ marginRight: "8px" }}
-      ></i>
-      <span>{message}</span>
-
-      {type === "confirm" ? (
-        <div className="toast-actions">
-          <button className="btn btn-secondary btn-sm" onClick={onCancel}>No</button>
-          <button className="btn btn-primary btn-sm" onClick={onConfirm}>Yes</button>
-        </div>
-      ) : (
-        <button className="close-toast" onClick={onClose}>
-          ×
-        </button>
-      )}
-    </div>
-  );
-};
 
 const UserManagement = () => {
   const { theme } = useTheme();
@@ -50,13 +21,7 @@ const UserManagement = () => {
     role: "doctor",
   });
   const [editingUser, setEditingUser] = useState(null);
-
-  const [toast, setToast] = useState({
-    message: "",
-    type: "", // success, error, confirm
-    onConfirm: null,
-    onCancel: null,
-  });
+  const API_URL = "http://localhost:3001/users";
 
   useEffect(() => {
     fetchUsers();
@@ -64,7 +29,7 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/users");
+      const response = await axios.get(API_URL);
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -98,48 +63,62 @@ const UserManagement = () => {
 
     try {
       if (editingUser) {
-        await axios.put(
-          `http://localhost:3001/users/${editingUser.id}`,
-          formData
-        );
-        showToast("User updated successfully", "success");
+        await axios.put(`${API_URL}/${editingUser.id}`, formData);
+        toast.success("User updated successfully");
       } else {
-        await axios.post("http://localhost:3001/users", formData);
-        showToast("User added successfully", "success");
+        await axios.post(API_URL, formData);
+        toast.success("User added successfully");
       }
       closeModal();
       fetchUsers();
     } catch (error) {
       console.error("Error saving user:", error);
-      showToast("Error saving user", "error");
+      toast.error("Error saving user");
     }
   };
 
   const handleDelete = (id) => {
-    setToast({
-      message: "Are you sure you want to delete this user?",
-      type: "confirm",
-      onConfirm: async () => {
-        try {
-          await axios.delete(`http://localhost:3001/users/${id}`);
-          fetchUsers();
-          showToast("User deleted successfully", "success");
-        } catch (error) {
-          console.error("Error deleting user:", error);
-          showToast("Error deleting user", "error");
-        }
-      },
-      onCancel: () => {
-        showToast("User deletion cancelled", "info");
-      },
-    });
-  };
+    const confirmToast = ({ closeToast }) => (
+      <div>
+        <p style={{color: "black"}}>Are you sure you want to delete this user?</p>
+        <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+          <button
+            className="btn btn-primary"
+            onClick={async () => {
+              try {
+                await axios.delete(`${API_URL}/${id}`);
+                setUsers((prev) => prev.filter((u) => u.id !== id));
+                toast.dismiss();
+                toast.error("User deleted.");
+              } catch (error) {
+                console.error("Error deleting user:", error);
+                toast.dismiss();
+                toast.error("Failed to delete user.");
+              }
+            }}
+          >
+            Confirm
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              toast.dismiss();
+              toast.info("Deletion cancelled.");
+            }}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
 
-  const showToast = (message, type = "success") => {
-    setToast({ message, type, onConfirm: null, onCancel: null });
-    setTimeout(() => {
-      setToast({ message: "", type: "", onConfirm: null, onCancel: null });
-    }, 3000);
+    toast(confirmToast, {
+      position: "top-center",
+      autoClose: false,
+      closeOnClick: false,
+      draggable: false,
+      closeButton: false,
+    });
   };
 
   const filteredUsers = users.filter((user) => {
@@ -157,16 +136,7 @@ const UserManagement = () => {
 
   return (
     <div className={`dashboard-main ${theme}`}>
-      <Toast
-        message={toast.message}
-        type={toast.type}
-        onClose={() =>
-          setToast({ message: "", type: "", onConfirm: null, onCancel: null })
-        }
-        onConfirm={toast.onConfirm}
-        onCancel={toast.onCancel}
-      />
-
+      <ToastContainer position="top-center" autoClose={3000} />
       <h1>User Management</h1>
 
       <div className="user-actions">
@@ -193,46 +163,51 @@ const UserManagement = () => {
         </button>
       </div>
 
-      <table className="user-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredUsers.map((user) => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.role}</td>
-              <td>
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => openModal(user)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-remove"
-                  onClick={() => handleDelete(user.id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-          {filteredUsers.length === 0 && (
+      <div className="table-responsive">
+        <table className="user-table">
+          <thead>
             <tr>
-              <td colSpan="4" style={{ textAlign: "center", padding: "1rem" }}>
-                No users found.
-              </td>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredUsers.map((user) => (
+              <tr key={user.id}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.role}</td>
+                <td>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => openModal(user)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => handleDelete(user.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {filteredUsers.length === 0 && (
+              <tr>
+                <td
+                  colSpan="4"
+                  style={{ textAlign: "center", padding: "1rem" }}
+                >
+                  No users found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
@@ -290,10 +265,10 @@ const UserManagement = () => {
               </div>
             </div>
             <div className="modal-actions">
-              <button className="cancel-btn" onClick={closeModal}>
+              <button className="btn btn-primary" onClick={closeModal}>
                 Cancel
               </button>
-              <button className="save-btn" onClick={handleSave}>
+              <button className="btn btn-primary" onClick={handleSave}>
                 Save
               </button>
             </div>
@@ -303,4 +278,5 @@ const UserManagement = () => {
     </div>
   );
 };
+
 export default UserManagement;

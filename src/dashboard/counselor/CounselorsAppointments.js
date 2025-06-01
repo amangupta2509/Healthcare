@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { XCircle } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./master_admin.css";
+import "../master_admin/master_admin.css";
 
-const DoctorAppointments = () => {
+const CounselorsAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null);
 
-  const API_URL = "http://localhost:5000/doctorAppointments";
+  const API_URL = "http://localhost:5000/counselorAppointments";
 
   useEffect(() => {
     fetch(API_URL)
@@ -44,6 +44,7 @@ const DoctorAppointments = () => {
 
     const updated = { ...current, status: nextStatus };
     updateAppointment(updated);
+
     toast.info(`Status updated to: ${nextStatus}`);
   };
 
@@ -96,14 +97,13 @@ const DoctorAppointments = () => {
       closeOnClick: false,
       draggable: false,
       closeButton: false,
-      size: "small",
     });
   };
 
   return (
     <div className="dashboard-main">
       <ToastContainer position="top-center" autoClose={2000} />
-      <h1>Doctor Appointments</h1>
+      <h1>Counselor Appointments</h1>
 
       {appointments.length === 0 ? (
         <p>No appointments found.</p>
@@ -149,36 +149,41 @@ const DoctorAppointments = () => {
                   </td>
                   <td>
                     {a.type === "Online" ? (
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
                         <input
                           type="text"
-                          className="search-input"
                           value={a.meetingLink || ""}
                           onChange={(e) =>
                             handleMeetingLinkChange(a.id, e.target.value)
                           }
                           placeholder="Enter or generate"
-                          style={{
-                            width: "180px",
-                            padding: "5px 8px",
-                            fontSize: "14px",
-                            border: "1px solid #ccc",
-                            borderRadius: "6px",
-                          }}
+                          style={{ width: "180px", marginBottom: "5px" }}
+                          className="search-input"
                         />
-                        <button
-                          className="btn btn-primary"
-                          onClick={() => handleGenerateLink(a.id)}
-                        >
-                          Auto
-                        </button>
-                        <button
-                          className="btn btn-primary"
-                          style={{ backgroundColor: "#f44336", color: "#fff" }}
-                          onClick={() => handleMeetingLinkChange(a.id, "")}
-                        >
-                          <XCircle size={16} />
-                        </button>
+                        <div style={{ display: "flex", gap: "5px" }}>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => handleGenerateLink(a.id)}
+                          >
+                            Auto
+                          </button>
+                          <button
+                            className="btn btn-primary"
+                            style={{
+                              backgroundColor: "#f44336",
+                              color: "#fff",
+                            }}
+                            onClick={() => handleMeetingLinkChange(a.id, "")}
+                          >
+                            <XCircle size={16} />
+                          </button>
+                        </div>
                       </div>
                     ) : (
                       "-"
@@ -216,18 +221,18 @@ const DoctorAppointments = () => {
 
       {selectedNote && (
         <div className="modal-overlay">
-          <div className="modalsc-box"
-          style={{border:"1px solid #cc5500"}}
-          >
+          <div className="modalsc-box" style={{ border: "1px solid #cc5500" }}>
             <h2>Full Notes</h2>
             <p>{selectedNote}</p>
             <div className="center-btn">
-              <center><button
-                className="btn btn-primary"
-                onClick={() => setSelectedNote(null)}
-              >
-                Close
-              </button></center>
+              <center>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setSelectedNote(null)}
+                >
+                  Close
+                </button>
+              </center>
             </div>
           </div>
         </div>
@@ -236,4 +241,4 @@ const DoctorAppointments = () => {
   );
 };
 
-export default DoctorAppointments;
+export default CounselorsAppointments;

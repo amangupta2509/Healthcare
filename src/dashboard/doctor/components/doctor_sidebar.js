@@ -158,50 +158,114 @@ const DoctorSidebar = () => {
           <ul className="sidebar-menu">
             <li>
               <NavLink to="/doctor/doctor_profile" className={navLinkClass}>
-                <Home size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
+                <Home
+                  size={18}
+                  style={{
+                    marginRight: !collapsed || isHovering ? "10px" : "0",
+                  }}
+                />
                 <span>Dashboard</span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/doctor/doctor_clients" className={navLinkClass}>
-                <Users size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
+                <Users
+                  size={18}
+                  style={{
+                    marginRight: !collapsed || isHovering ? "10px" : "0",
+                  }}
+                />
                 <span>Client Management</span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/doctor/DoctorsAppointments" className={navLinkClass}>
-                <Users size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
+              <NavLink
+                to="/doctor/DoctorsAppointments"
+                className={navLinkClass}
+              >
+                <Users
+                  size={18}
+                  style={{
+                    marginRight: !collapsed || isHovering ? "10px" : "0",
+                  }}
+                />
                 <span> Appointments</span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/doctor/DoctorAssignDecision" className={navLinkClass}>
-                <Hospital size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
+              <NavLink
+                to="/doctor/DoctorAssignDecision"
+                className={navLinkClass}
+              >
+                <Hospital
+                  size={18}
+                  style={{
+                    marginRight: !collapsed || isHovering ? "10px" : "0",
+                  }}
+                />
                 <span>Assign Patient</span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/doctor/DoctorAssignmentDashboard" className={navLinkClass}>
-                <LayoutDashboard size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
+              <NavLink
+                to="/doctor/DoctorAssignmentDashboard"
+                className={navLinkClass}
+              >
+                <LayoutDashboard
+                  size={18}
+                  style={{
+                    marginRight: !collapsed || isHovering ? "10px" : "0",
+                  }}
+                />
                 <span>Assign Dashboard</span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/doctor/DoctorUpcomingAppointments" className={navLinkClass}>
-                <BarChart2 size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
+              <NavLink
+                to="/doctor/DoctorUpcomingAppointments"
+                className={navLinkClass}
+              >
+                <BarChart2
+                  size={18}
+                  style={{
+                    marginRight: !collapsed || isHovering ? "10px" : "0",
+                  }}
+                />
                 <span>Report</span>
               </NavLink>
             </li>
-          
-            
+            <li>
+              <NavLink
+                to="/doctor/DoctorPasswordRequest"
+                className={navLinkClass}
+              >
+                <BarChart2
+                  size={18}
+                  style={{
+                    marginRight: !collapsed || isHovering ? "10px" : "0",
+                  }}
+                />
+                <span>Password Request</span>
+              </NavLink>
+            </li>
+
             <li>
               <a
                 href="#"
                 onClick={handleLogoutClick}
                 className={navLinkClass({ isActive: false })}
-                style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+                style={{
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
-                <LogOut size={18} style={{ marginRight: !collapsed || isHovering ? "10px" : "0" }} />
+                <LogOut
+                  size={18}
+                  style={{
+                    marginRight: !collapsed || isHovering ? "10px" : "0",
+                  }}
+                />
                 <span>Log Out</span>
               </a>
             </li>
@@ -209,7 +273,11 @@ const DoctorSidebar = () => {
 
           <button className="collapse-toggle" onClick={toggleCollapse}>
             <div className="claude-toggle">
-              {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+              {collapsed ? (
+                <ChevronRight size={16} />
+              ) : (
+                <ChevronLeft size={16} />
+              )}
             </div>
           </button>
         </nav>

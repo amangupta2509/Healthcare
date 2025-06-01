@@ -99,7 +99,7 @@ const PatientJourney = () => {
                         href={patient.reportPdfUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn btn-secondary"
+                        className="btn btn-primary"
                       >
                         View Report
                       </a>
@@ -127,7 +127,7 @@ const PatientJourney = () => {
                         href={patient.prescription.fileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn btn-secondary"
+                        className="btn btn-primary"
                       >
                         View Prescription
                       </a>

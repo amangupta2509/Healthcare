@@ -41,42 +41,44 @@ const AllReports = () => {
         />
       </div>
 
-      <table className="user-table">
-        <thead>
-          <tr>
-            <th>MRN</th>
-            <th>Name</th>
-            <th>Condition</th>
-            <th>View Report</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map((p) => (
-            <tr key={p.mrn}>
-              <td>{p.mrn}</td>
-              <td>{p.name}</td>
-              <td>{p.condition}</td>
-              <td>
-                <a
-                  href={p.reportPdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-secondary"
-                >
-                  View PDF
-                </a>
-              </td>
-            </tr>
-          ))}
-          {filtered.length === 0 && (
+      <div className="table-responsive">
+        <table className="user-table">
+          <thead>
             <tr>
-              <td colSpan="4" style={{ textAlign: "center", padding: "1rem" }}>
-                No reports found.
-              </td>
+              <th>MRN</th>
+              <th>Name</th>
+              <th>Condition</th>
+              <th>View Report</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filtered.map((p) => (
+              <tr key={p.mrn}>
+                <td>{p.mrn}</td>
+                <td>{p.name}</td>
+                <td>{p.condition}</td>
+                <td>
+                  <a
+                    href={p.reportPdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary"
+                  >
+                    View PDF
+                  </a>
+                </td>
+              </tr>
+            ))}
+            {filtered.length === 0 && (
+              <tr>
+                <td colSpan="4" style={{ textAlign: "center", padding: "1rem" }}>
+                  No reports found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

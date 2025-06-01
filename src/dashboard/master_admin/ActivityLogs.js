@@ -13,6 +13,7 @@ const ActivityLogs = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -25,6 +26,8 @@ const ActivityLogs = () => {
         setLogs(sorted);
       } catch (err) {
         console.error("Error fetching logs:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchLogs();
@@ -77,12 +80,27 @@ const ActivityLogs = () => {
     toast.success("CSV exported successfully!");
   };
 
+  const handleReset = () => {
+    setSearch("");
+    setRoleFilter("");
+    setStartDate("");
+    setEndDate("");
+  };
+
   const actionClass = (action) => {
     const act = action.toLowerCase();
     if (act.includes("create")) return "badge-green";
     if (act.includes("update")) return "badge-yellow";
     if (act.includes("delete")) return "badge-red";
     return "badge-blue";
+  };
+
+  const highlightText = (text, keyword) => {
+    if (!keyword) return text;
+    const parts = text.split(new RegExp(`(${keyword})`, "gi"));
+    return parts.map((part, i) =>
+      part.toLowerCase() === keyword.toLowerCase() ? <mark key={i}>{part}</mark> : part
+    );
   };
 
   return (
@@ -97,74 +115,84 @@ const ActivityLogs = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
+        <select  value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
           <option value="">All Roles</option>
-          <option value="admin">Admin</option>
           <option value="doctor">Doctor</option>
           <option value="physio">Physio</option>
           <option value="dietitian">Dietitian</option>
+          <option value="Phlebotomist ">Phlebotomist</option>
+          <option value="Lab">Lab</option>
         </select>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
+        <input  type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+        <button className="btn btn-primary" onClick={handleReset}>
+          Reset Filters
+        </button>
         <button className="btn btn-primary" onClick={exportCSV}>
           Export to CSV
         </button>
       </div>
 
-      <div className="table-responsive">
-        <table className="appointments-table activity-log-table">
-          <thead>
-            <tr>
-              <th>Timestamp</th>
-              <th>Actor</th>
-              <th>MRN</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginated.map((log) => (
-              <tr key={log.id}>
-                <td>{new Date(log.timestamp).toLocaleString()}</td>
-                <td>{log.actor.toUpperCase()}</td>
-                <td>{log.mrn}</td>
-                <td>
-                  <span className={`status-badge ${actionClass(log.action)}`}>
-                    {log.action}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {filtered.length === 0 && <p className="error-text">No logs found.</p>}
-      </div>
+      {loading ? (
+        <p className="loading-text">Loading activity logs...</p>
+      ) : (
+        <>
+          <div className="table-responsive">
+            <table className="appointments-table activity-log-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Actor</th>
+                  <th>MRN</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginated.map((log) => (
+                  <tr key={log.id}>
+                    <td>{new Date(log.timestamp).toLocaleString()}</td>
+                    <td>
+                      <span className={`role-badge badge-${log.actor.toLowerCase()}`}>
+                        {log.actor.toUpperCase()}
+                      </span>
+                    </td>
+                    <td>{highlightText(log.mrn, search)}</td>
+                    <td>
+                      <span className={`status-badge ${actionClass(log.action)}`}>
+                        {highlightText(log.action, search)}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {filtered.length === 0 && <p className="error-text">No logs found.</p>}
+          </div>
 
-      {filtered.length > itemsPerPage && (
-        <div className="pagination">
-          <button
-            className="btn btn-secondary"
-            disabled={page === 1}
-            onClick={() => setPage((p) => p - 1)}
-          >
-            Prev
-          </button>
-          <span>Page {page}</span>
-          <button
-            className="btn btn-secondary"
-            disabled={page * itemsPerPage >= filtered.length}
-            onClick={() => setPage((p) => p + 1)}
-          >
-            Next
-          </button>
-        </div>
+          <p className="pagination-info">
+            Showing {(page - 1) * itemsPerPage + 1}–{Math.min(page * itemsPerPage, filtered.length)} of {filtered.length} logs
+          </p>
+
+          {filtered.length > itemsPerPage && (
+            <div className="pagination">
+              <button
+                className="btn btn-secondary"
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+              >
+                Prev
+              </button>
+              <span>Page {page}</span>
+              <button
+                className="btn btn-secondary"
+                disabled={page * itemsPerPage >= filtered.length}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

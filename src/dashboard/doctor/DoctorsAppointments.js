@@ -4,7 +4,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../master_admin/master_admin.css";
 
-
 const DoctorsAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null);
@@ -149,7 +148,13 @@ const DoctorsAppointments = () => {
                   </td>
                   <td>
                     {a.type === "Online" ? (
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
                         <input
                           type="text"
                           value={a.meetingLink || ""}
@@ -157,6 +162,7 @@ const DoctorsAppointments = () => {
                             handleMeetingLinkChange(a.id, e.target.value)
                           }
                           placeholder="Enter or generate"
+                          className="search-input"
                           style={{
                             width: "180px",
                             padding: "5px 8px",
@@ -215,12 +221,12 @@ const DoctorsAppointments = () => {
 
       {selectedNote && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className="modalsc-box" style={{ border: "1px solid #cc5500" }}>
             <h2>Full Notes</h2>
             <p>{selectedNote}</p>
             <div className="center-btn">
               <button
-                className="btn btn-secondary"
+                className="btn btn-primary"
                 onClick={() => setSelectedNote(null)}
               >
                 Close

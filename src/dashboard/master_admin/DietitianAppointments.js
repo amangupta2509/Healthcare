@@ -66,7 +66,7 @@ const DietitianAppointments = () => {
         <p>Confirm delete?</p>
         <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
           <button
-            className="btn btn-secondary"
+            className="btn btn-primary"
             onClick={() => {
               fetch(`${API_URL}/${id}`, { method: "DELETE" }).then(() =>
                 setAppointments((prev) => prev.filter((a) => a.id !== id))
@@ -78,7 +78,7 @@ const DietitianAppointments = () => {
             Confirm
           </button>
           <button
-            className="btn btn-secondary"
+            className="btn btn-primary"
             onClick={() => {
               toast.dismiss();
               toast.info("Deletion cancelled.");
@@ -140,7 +140,7 @@ const DietitianAppointments = () => {
                   <td>{a.time}</td>
                   <td>
                     <button
-                      className="btn btn-secondary"
+                      className="btn btn-primary"
                       onClick={() => setSelectedNote(a.notes)}
                     >
                       View
@@ -151,6 +151,7 @@ const DietitianAppointments = () => {
                       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <input
                           type="text"
+                          className="search-input"
                           value={a.meetingLink || ""}
                           onChange={(e) =>
                             handleMeetingLinkChange(a.id, e.target.value)
@@ -165,13 +166,14 @@ const DietitianAppointments = () => {
                           }}
                         />
                         <button
-                          className="btn btn-secondary"
+                          className="btn btn-primary"
                           onClick={() => handleGenerateLink(a.id)}
+                          
                         >
                           Auto
                         </button>
                         <button
-                          className="btn btn-secondary"
+                          className="btn btn-primary"
                           style={{ backgroundColor: "#f44336", color: "#fff" }}
                           onClick={() => handleMeetingLinkChange(a.id, "")}
                         >
@@ -199,7 +201,7 @@ const DietitianAppointments = () => {
                   </td>
                   <td>
                     <button
-                      className="btn btn-secondary"
+                      className="btn btn-primary"
                       onClick={() => handleDelete(a.id)}
                     >
                       Delete
@@ -214,12 +216,14 @@ const DietitianAppointments = () => {
 
       {selectedNote && (
         <div className="modal-overlay">
-          <div className="modal-content">
+           <div className="modalsc-box"
+          style={{border:"1px solid #cc5500"}}
+          >
             <h2>Full Notes</h2>
             <p>{selectedNote}</p>
             <div className="center-btn">
               <button
-                className="btn btn-secondary"
+                className="btn btn-primary"
                 onClick={() => setSelectedNote(null)}
               >
                 Close

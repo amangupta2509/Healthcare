@@ -95,7 +95,9 @@ const Login = () => {
               break;
             case "masteradmin":
               navigate("/masteradmin");
-
+              break;
+            case "counselor":
+              navigate("/counselor");
               break;
             default:
               navigate("/unauthorized");

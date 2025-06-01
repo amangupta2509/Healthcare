@@ -19,7 +19,7 @@
   align-items: center;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
   gap: 10px;
-}
+}x
 
 .toast-message.error {
   background: #dc3545;
@@ -84,6 +84,7 @@
   border: 1px solid var(--border-color);
   border-radius: 6px;
   width: 250px;
+  max-width: 100%;
   font-size: 1rem;
 }
 
@@ -170,7 +171,6 @@
   align-items: center;
   z-index: 99999;
 }
-
 .modal-box {
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -181,6 +181,59 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
   z-index: 10000;
 }
+.modals-box {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  z-index: 10000;
+
+  /* Add these for scroll */
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modalsc-box {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 2rem;
+  border-radius: 12px;
+  border-color: 1px solid #cc5500;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  z-index: 10000;
+
+  /* Add these for scroll */
+  max-height: 90vh;
+  overflow-y: auto;
+}
+/* Optional: Custom scrollbar styles */
+.modals-box::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modals-box::-webkit-scrollbar-thumb {
+  background-color: #cc5500;
+  border-radius: 6px;
+}
+
+.modals-box::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+/* .modal-box {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  z-index: 10000;
+} */
 
 .modal-header {
   display: flex;
@@ -329,6 +382,33 @@
   background: var(--bg-secondary);
   color: var(--text-primary);
 }
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.user-table {
+  width: 100%;
+  min-width: 600px; /* Prevent table from squashing too much */
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Optional: make scroll bar stylish */
+.table-responsive::-webkit-scrollbar {
+  height: 6px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #cc5500;
+  border-radius: 3px;
+}
+
 /* activity log */
 .log-search {
   margin-bottom: 1.5rem;
@@ -382,12 +462,69 @@
 }
 
 .log-controls input[type="text"],
+.log-controls select,
+.log-controls textarea,
 .log-controls input[type="date"] {
   padding: 0.6rem 1rem;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   background: var(--bg-secondary);
   color: var(--text-primary);
+}
+
+/* Sticky header */
+.activity-log-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-secondary);
+  z-index: 1;
+}
+
+/* Role badges */
+.role-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.badge-lab {
+  background-color: #6c757d;
+}
+.badge-Phlebotomist {
+  background-color: red;
+}
+.badge-doctor {
+  background-color: #007bff;
+}
+.badge-physio {
+  background-color: #28a745;
+}
+.badge-dietitian {
+  background-color: #cc5500;
+}
+
+/* Optional: highlight search match */
+mark {
+  background-color: yellow;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Pagination info */
+.pagination-info {
+  margin-top: 1rem;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Loading */
+.loading-text {
+  font-style: italic;
+  color: gray;
+  padding: 1rem;
+  text-align: center;
 }
 
 /* SecurityControls */
@@ -405,14 +542,14 @@
   z-index: 99;
 }
 
-.modal-box {
+/* .modal-box {
   background: var(--bg-primary);
   padding: 2rem;
   border-radius: 12px;
   width: 90%;
   max-width: 400px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-}
+} */
 
 .modal-actions {
   display: flex;
@@ -450,6 +587,23 @@
 .form-group input + input {
   margin-top: 0.75rem;
 }
+.role-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Optional focus style */
+.role-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(204, 85, 0, 0.2);
+}
 
 /*services */
 /* --- Service Form Custom Layout Fixes --- */
@@ -462,8 +616,8 @@ form.card textarea {
   margin-bottom: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  background: white;
-  color: #333;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 /* Fixing textarea height + font */
@@ -640,7 +794,7 @@ form.card .d-flex .btn-secondary:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -676,13 +830,13 @@ form.card .d-flex .btn-secondary:hover {
   border-radius: 12px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   text-align: center;
 }
 
 .appointment-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .card-icon {
@@ -792,3 +946,61 @@ form.card .d-flex .btn-secondary:hover {
   overflow-x: auto;
   width: 100%;
 }
+/*passsword request*/
+.status-tag {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.status-tag.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-tag.approved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-tag.rejected {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  margin-right: 0.5rem;
+  padding: 5px 12px;
+  border-radius: 4px;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+}
+.scrollable-notes-table {
+  max-height: 180px; /* Adjust to fit ~3 entries */
+  overflow-y: auto;
+}
+
+.scrollable-notes-table::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable-notes-table::-webkit-scrollbar-thumb {
+  background-color: #cc5500;
+  border-radius: 4px;
+}
+
+.scrollable-notes-table::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+

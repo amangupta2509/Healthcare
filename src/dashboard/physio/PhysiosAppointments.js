@@ -141,7 +141,13 @@ const PhysiosAppointments = () => {
                   </td>
                   <td>
                     {a.type === "Online" ? (
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
                         <input
                           type="text"
                           value={a.meetingLink || ""}
@@ -149,6 +155,7 @@ const PhysiosAppointments = () => {
                             handleMeetingLinkChange(a.id, e.target.value)
                           }
                           placeholder="Enter or generate"
+                          className="search-input"
                           style={{
                             width: "180px",
                             padding: "5px 8px",
@@ -207,12 +214,12 @@ const PhysiosAppointments = () => {
 
       {selectedNote && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className="modalsc-box" style={{ border: "1px solid #cc5500" }}>
             <h2>Full Notes</h2>
             <p>{selectedNote}</p>
             <div className="center-btn">
               <button
-                className="btn btn-secondary"
+                className="btn btn-primary"
                 onClick={() => setSelectedNote(null)}
               >
                 Close
